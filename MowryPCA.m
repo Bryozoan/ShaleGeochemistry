@@ -3,6 +3,7 @@
 
 %Note, you must run MowryVar script before running this one.
 
+
 %z-score data to make it usable for PCA
 %however, the 'zscore' function does not allow 'NaN' values, so I am
 %writing my own zcore function based on the equation given in the MATLAB
@@ -19,7 +20,7 @@ mCorrCo = flipud(mCorrCo);
 heatmap(mCorrCo, ...
     'Title', 'Correlation Mattrix',...
     'XDisplayLabels', cLabels,...
-    'YDisplayLabels', flipud(cLabels));
+    'YDisplayLabels', cLabels);
 mColor = [1 0 0
     1 1 0
     1 1 1
@@ -34,15 +35,26 @@ colormap(mColor)
 [mPCeq,mScore,vVariance,~,vExplained] = pca(mSampDataz);
 
 % Separate out the data by location
-mWRB1 = mScore(1:21, : );
-mWRB2 = mScore(22:152, : );
-mWRB3 = mScore(153:214, : );
-mWRB4 = mScore(215:220, : );
-mWRB5 = mScore(221:248, : );
-mWRB6 = mScore(249:295, : );
-mWRB7 = mScore(296:321, : );
-mHB1 = mScore(322:359, : );
-mHB2 = mScore(360:376, : );
+mWRB1 = mScore(vLocations==1, : );
+mWRB2 = mScore(vLocations==2, : );
+mWRB3 = mScore(vLocations==3, : );
+mWRB4 = mScore(vLocations==4, : );
+mWRB5 = mScore(vLocations==5, : );
+mWRB6 = mScore(vLocations==6, : );
+mWRB7 = mScore(vLocations==7, : );
+mHB1 = mScore(vLocations==8, : );
+mHB2 = mScore(vLocations==9, : );
+% Create datafor for KS test. this is so it can go through the loop easily.
+cSampLocPCA = cell(9:1);
+cSampLocPCA{1} = mWRB1;
+cSampLocPCA{2} = mWRB2;
+cSampLocPCA{3} = mWRB3;
+cSampLocPCA{4} = mWRB4;
+cSampLocPCA{5} = mWRB5;
+cSampLocPCA{6} = mWRB6;
+cSampLocPCA{7} = mWRB7;
+cSampLocPCA{8} = mHB1;
+cSampLocPCA{9} = mHB2;
 
 %calculate mean and sd on first 2 PC's
 mWRB2SD_1 = std(mWRB1(:,1:2), 'omitnan')*2;
@@ -112,11 +124,11 @@ plot(mWRB1(:,1), mWRB1(:,2), 'ro', ...
     h.LineWidth = 0.5;
     textscatter(mWRBmean3, cAreaNames{3}); %names area
 
-    h = plotEllipses(mWRBmean4, mWRB2SD_4);
-    h.FaceColor = [1 1 0 .05]; %4th value is undocumented: transparency
-    h.EdgeColor = 'y'; 
-    h.LineWidth = 0.5;
-    textscatter(mWRBmean4, cAreaNames{4}); %adds name to area
+%     h = plotEllipses(mWRBmean4, mWRB2SD_4);
+%     h.FaceColor = [1 1 0 .05]; %4th value is undocumented: transparency
+%     h.EdgeColor = 'y'; 
+%     h.LineWidth = 0.5;
+%     textscatter(mWRBmean4, cAreaNames{4}); %adds name to area
 
     h = plotEllipses(mWRBmean5, mWRB2SD_5);
     h.FaceColor = [1 0 1 .05]; %4th value is undocumented: transparency
@@ -150,7 +162,6 @@ plot(mWRB1(:,1), mWRB1(:,2), 'ro', ...
 hold off
 
 %plot 3d graph of the PC's (first 3)
-%3D plot of 
 figure('Color', 'white');
 plot3(mWRB1(:,1), mWRB1(:,2), mWRB1(:,3), 'ro', ...
     mWRB2(:,1), mWRB2(:,2), mWRB2(:,3), 'go', ...
@@ -165,5 +176,5 @@ plot3(mWRB1(:,1), mWRB1(:,2), mWRB1(:,3), 'ro', ...
     xlabel('Principal Component 1')
     ylabel('Principal component 2')
     zlabel('Principal Component 3')
-    title('2 Main Principal Components')
+    title('3 Main Principal Components')
     hold off

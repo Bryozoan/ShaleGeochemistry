@@ -4,12 +4,12 @@
 %run the script which will extract data by location
 MowryVar
 
+% run script for PCA
+MowryPCA
+
 %run script for single variate Stats
 MowrySingle
 
 % run Script for autospectral analysis
 
 % run Script for Cross spectral analysis
-
-% run script for PCA
-

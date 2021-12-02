@@ -2,7 +2,7 @@
 % location as a matrix
 
 %load the variable names vector. this will not change
-load('C:\Users\duckm\OneDrive\BYU Fall 2021\Geodata_Bickmore\vMowryVariables.mat');
+load('C:\Users\duckm\OneDrive\BYU Fall 2021\Geodata_Bickmore\ShaleGeochemistry\vMowryVariables.mat');
 
 
 cSampLoc = cell(9:1);
@@ -100,6 +100,9 @@ vHB2Samp = readvars('MowryShaleJanuaryCompiled_v13.xlsx', opts);
 %define options for importing
 opts = detectImportOptions('MowryShaleJanuaryCompiled_v13.xlsx');
 opts.Sheet = 'Composite';
-opts.SelectedVariableNames = [7:17 21:43 46:67]; 
+opts.SelectedVariableNames = [1:1 7:17 21:43 46:67]; 
 opts.DataRange = '5:380';
 mSampData = readmatrix('MowryShaleJanuaryCompiled_v13.xlsx',opts);
+%pull out location area into a vector
+vLocations = mSampData(:,1);
+mSampData = mSampData(:,2:end);
